@@ -20,7 +20,7 @@ skill-evolve 用**两种模式**分别对应这两件事，并保证「只会变
 
 ## 安装
 
-skill-evolve 是一个 [Agent Skills](https://agentskills.io) 兼容 skill，可在任何 skills-compatible 的 AI agent runtime 中运行。
+skill-evolve 基于开放的 [Agent Skills](https://agentskills.io) 协议，可在任何 skills-compatible 的 AI agent runtime 中运行。
 
 ### 方式一：通用安装器（推荐，跨 runtime）
 
