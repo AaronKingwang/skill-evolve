@@ -1,0 +1,29 @@
+{
+  "_comment": "测试 prompt 模板。skill-evolve 模式 A 的 Phase 0.5 据此起草 3-5 条，展示给用户确认后才用。每条覆盖一类场景。判分见 references/rubric.md 维度 8。",
+  "global_constraints": [
+    "测试 agent 必须真实执行 skill；默认允许新增文件写入操作，但严禁直接修改用户文件系统已有文件或删除文件。任何新增/修改/删除操作都必须先提醒用户并得到用户明确确认后再执行。"
+  ],
+  "test_prompts": [
+    {
+      "id": 1,
+      "scenario": "典型场景（happy path）",
+      "prompt": "<用户最常用这个 skill 干的那件事，用一句真实指令表达>",
+      "expected": "<有 skill 时应触发的关键步骤/产出；judge 据此对比有无 skill 的差异>",
+      "test_type": "full_test"
+    },
+    {
+      "id": 2,
+      "scenario": "边界场景（容易出错/不可逆操作）",
+      "prompt": "<会逼出 skill 故障处理或安全黑名单的指令，例如涉及删除/覆盖/外发>",
+      "expected": "<skill 应在检查点停下确认，或按故障分支兜底，而不是直冲>",
+      "test_type": "full_test"
+    },
+    {
+      "id": 3,
+      "scenario": "歧义场景（指令不完整）",
+      "prompt": "<故意省略关键信息的模糊指令，例如「帮我把这个弄一下」>",
+      "expected": "<skill 应识别歧义并按既定规则补全或反问，而非乱猜>",
+      "test_type": "full_test"
+    }
+  ]
+}
