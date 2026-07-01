@@ -3,7 +3,7 @@ name: skill-evolve
 version: 1.0.0
 description: "让其他 skill 自我进化：评估 → 改进 → 实测验证 → 人类确认 → 保留或回滚。进化有两种模式——『进化/优化某个 skill』走批量爬山（模式A）；『把刚才用某 skill 踩的坑/纠正沉淀进去』走会话提炼（模式B）。另支持只读的历史查询。当用户提到 进化skill、优化skill质量、让skill变好、给skill打分评估、把这次的经验沉淀进skill、skill爬山、查看skill改进历史、skill优化记录、skill评分变化、这个skill都改了什么 时使用。"
 metadata:
-  author: AaronKingwang
+  author: MoonCat
   requires:
     bins: ["python"]
 ---
@@ -185,4 +185,4 @@ metadata:
 
 ---
 
-*Author: **AaronKingwang** · skill-evolve v1.0.0 · 思想来源见 [README.md](README.md)*
+*Author: **MoonCat** · skill-evolve v1.0.0 · 思想来源见 [README.md](README.md)*

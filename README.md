@@ -2,7 +2,7 @@
 
 > 让你的其他 skill 自我进化：**评估 → 有界改进 → 独立盲评 → 验证门控 → 人类确认 → 保留或回滚**。
 >
-> Author: **AaronKingwang**
+> Author: **MoonCat**
 
 把「训练模型」的那套方法搬到「训练 skill 文档」上：不改模型权重，而是把 `SKILL.md` 当成可优化的外部状态，用一个带验证门控的爬山循环，让它越用越好——而且每一步改动都要过独立评审、要你点头才落地。
 
@@ -189,4 +189,4 @@ skill-evolve/
 
 ---
 
-*© Author: **AaronKingwang** · skill-evolve v1.0.0*
+*© Author: **MoonCat** · skill-evolve v1.0.0*
