@@ -1,5 +1,7 @@
 # skill-evolve
 
+![skill-evolve 演示](assets/skill-evolve-promo.gif)
+
 > 让你的其他 skill 自我进化：**评估 → 有界改进 → 独立盲评 → 验证门控 → 人类确认 → 保留或回滚**。
 >
 > Author: **MoonCat**
