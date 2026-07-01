@@ -22,13 +22,21 @@ skill-evolve 用**两种模式**分别对应这两件事，并保证「只会变
 
 skill-evolve 基于开放的 [Agent Skills](https://agentskills.io) 协议，可在任何 skills-compatible 的 AI agent runtime 中运行。
 
-### 方式一：通用安装器（推荐，跨 runtime）
+### 方式一：一句话安装（推荐，跨 runtime）
+
+打开你正在用的 agent（Claude Code、Codex、Cursor、OpenClaw、Hermes、CodeBuddy、Workbuddy、Gemini CLI、kimi CLI、OpenCode 等），告诉它：
+
+```
+帮我安装这个 skill：https://github.com/AaronKingwang/skill-evolve
+```
+
+或者用通用 CLI 安装器 [`vercel-labs/skills`](https://github.com/vercel-labs/skills)（支持 55+ runtime）：
 
 ```bash
 npx skills add AaronKingwang/skill-evolve
 ```
 
-或使用 [`vercel-labs/skills`](https://github.com/vercel-labs/skills) 通用 CLI 安装器，它会自动识别你当前的 runtime 并把 skill 放到正确目录。
+它会自动识别你当前的 runtime 并把 skill 放到正确目录。需要指定时加 `-a claude-code` / `-a codex` / `-a cursor` / `-a openclaw` 等参数。
 
 ### 方式二：手动安装
 
