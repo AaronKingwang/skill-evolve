@@ -42,9 +42,9 @@
     {"id": 4, "name": "checkpoint", "score": 5, "max": 6, "evidence": "..."},
     {"id": 5, "name": "actionable_specificity", "score": 8, "max": 17, "evidence": "出现 5 处对冲词：建议/可考虑/视情况..."},
     {"id": 6, "name": "resource_integration", "score": 3, "max": 5, "evidence": "..."},
-    {"id": 7, "name": "safety_blacklist", "score": 2, "max": 9, "evidence": "涉及文件覆盖但无黑名单"},
+    {"id": 7, "name": "architecture_antipatterns", "score": 7, "max": 9, "evidence": "结构清晰但有一处 AI 腔套话"},
     {"id": 8, "name": "live_test", "score": 14, "max": 23, "evidence": "1 个 full_test，有 skill 优于 baseline 但另一例无差异", "real_test": true},
-    {"id": 9, "name": "antipatterns", "score": 3, "max": 9, "evidence": "..."}
+    {"id": 9, "name": "safety_blacklist", "score": 6, "max": 9, "evidence": "涉及文件覆盖但无黑名单"}
   ],
   "lowest_dimension": {"id": 5, "name": "actionable_specificity"},
   "dry_run_warning": false,
@@ -55,7 +55,7 @@
 字段说明：
 - judge 只输出 9 维明细；调用方自动计算汇总字段，不由 judge 填写，避免 LLM 算数错误：
   - `struct_score` = 维度 1+2+3+4+5+6 之和（满分 59）
-  - `test_score` = 维度 7+8+9 之和（满分 41）。⚠️ 命名沿用「test」是历史习惯，实际是有效性维合计。
+  - `test_score` = 维度 7+8+9 之和（满分 41）。⚠️ 命名沿用「test」是历史习惯，实际是有效性维合计。其中 dim7 为「整体架构与反模式」、dim9 为「安全黑名单」。
   - `total` = struct_score + test_score（满分 100）
 - `real_test`（维度 8 内）：是否有至少 1 个真实 full_test。若 false → 维度 8 封顶 7 分。
 - `dry_run_warning`：维度 8 全是 dry_run 时置 true，调用方需在账本 note 里打 ⚠️。

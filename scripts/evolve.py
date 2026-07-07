@@ -89,9 +89,9 @@ DIM_NAMES = {
     4: "Checkpoint",
     5: "ActionableSpecificity",
     6: "ResourceIntegration",
-    7: "SafetyBlacklist",
+    7: "ArchitectureAntipatterns",
     8: "LiveTest",
-    9: "AntiPatterns",
+    9: "SafetyBlacklist",
 }
 
 
