@@ -28,7 +28,7 @@
 === 测试执行轨迹（如有）===
 <粘贴每个测试 prompt 的「有 skill」vs「无 skill baseline」运行结果>
 
-按指定 JSON 格式输出，不要有多余文字。
+按指定 JSON 格式输出，只输出 9 维明细与 lowest_dimension/dry_run_warning/summary，不要输出 struct_score/test_score/total 等应由调用方计算的汇总字段，也不要有多余文字。
 ```
 
 ## 3. 强制输出格式（judge 必须返回此 JSON）
@@ -41,14 +41,11 @@
     {"id": 3, "name": "failure_encoding", "score": 4, "max": 12, "evidence": "只有「注意」无 if-fail 分支"},
     {"id": 4, "name": "checkpoint", "score": 5, "max": 6, "evidence": "..."},
     {"id": 5, "name": "actionable_specificity", "score": 8, "max": 17, "evidence": "出现 5 处对冲词：建议/可考虑/视情况..."},
-    {"id": 6, "name": "resource_integration", "score": 3, "max": 4, "evidence": "..."},
+    {"id": 6, "name": "resource_integration", "score": 3, "max": 5, "evidence": "..."},
     {"id": 7, "name": "safety_blacklist", "score": 2, "max": 9, "evidence": "涉及文件覆盖但无黑名单"},
     {"id": 8, "name": "live_test", "score": 14, "max": 23, "evidence": "1 个 full_test，有 skill 优于 baseline 但另一例无差异", "real_test": true},
     {"id": 9, "name": "antipatterns", "score": 3, "max": 9, "evidence": "..."}
   ],
-  "struct_score": 41,
-  "test_score": 14,
-  "total": 55,
   "lowest_dimension": {"id": 5, "name": "actionable_specificity"},
   "dry_run_warning": false,
   "summary": "最弱在可执行具体性(5)与故障编码(3)，对冲词偏多。"
@@ -56,26 +53,32 @@
 ```
 
 字段说明：
-- `struct_score` = 维度 1+2+3+4+5+6 之和（满分 59）
-- `test_score` = 维度 7+8+9 之和（满分 41）。⚠️ 命名沿用「test」是历史习惯，实际是有效性维合计。
-- `total` = struct_score + test_score（满分 100）
+- judge 只输出 9 维明细；调用方自动计算汇总字段，不由 judge 填写，避免 LLM 算数错误：
+  - `struct_score` = 维度 1+2+3+4+5+6 之和（满分 59）
+  - `test_score` = 维度 7+8+9 之和（满分 41）。⚠️ 命名沿用「test」是历史习惯，实际是有效性维合计。
+  - `total` = struct_score + test_score（满分 100）
 - `real_test`（维度 8 内）：是否有至少 1 个真实 full_test。若 false → 维度 8 封顶 7 分。
 - `dry_run_warning`：维度 8 全是 dry_run 时置 true，调用方需在账本 note 里打 ⚠️。
 
 ## 4. 调用方（skill-evolve 主流程）拿到 JSON 后
 
-1. 用 `struct_score` / `test_score` / `total` 调 `evolve.py ledger9` 记账（9 维明细）。
-2. 验证门控：`候选 total` **严格大于** `当前 best total` 才 keep；否则 reject。
-3. `lowest_dimension` → 模式 A 下一轮的攻坚目标。
-4. `dry_run_warning=true` 或 `real_test=false` → 提醒用户本轮实测信号弱，不要据此推进。
+1. 用 9 维明细调用方自行计算 `struct_score` / `test_score` / `total`：
+   - `struct_score = dim1+dim2+dim3+dim4+dim5+dim6`
+   - `test_score = dim7+dim8+dim9`
+   - `total = struct_score + test_score`
+2. 用 9 维分和 `total` 调 `evolve.py ledger9` 记账（见 §4 示例）。
+3. 验证门控：`候选 total` **严格大于** `当前 best total` 才 keep；否则 reject。
+4. `lowest_dimension` → 模式 A 下一轮的攻坚目标。
+5. `dry_run_warning=true` 或 `real_test=false` → 提醒用户本轮实测信号弱，不要据此推进。
 
 ## 5. 多 judge 评分计算法
 
 ### 5.1 怎么算分（两步，judge 之间一律等权）
 **第一步 · 单 judge 内部（9 维 → 该 judge 总分）**——所有 judge 都一样：
 ```
-该judge总分 = Σ(维度分 × 权重) / 满分归一   （即本 rubric 的 total 字段）
+该judge总分 = Σ(维度分) / 100 × 满分归一   # 即各维度 raw 分直接求和；rubric 中各维 max 即其权重
 ```
+实际可直接写为 `该judge总分 = dim1+dim2+...+dim9`，因为 rubric 已把每维满分按权重分配好（结构维 59 + 有效性维 41 = 100）。
 
 **第二步 · 多 judge 合成（逐维等权 + 中位数兜底）**：
 ```
